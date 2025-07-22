@@ -17,6 +17,7 @@ import java.util.List;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
     
     @Override

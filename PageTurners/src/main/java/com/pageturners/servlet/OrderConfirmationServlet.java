@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/order-confirmation")
 public class OrderConfirmationServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -13,6 +13,7 @@ import java.util.List;
 
 @WebServlet("/")
 public class HomeServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
     
     @Override

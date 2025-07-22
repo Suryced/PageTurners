@@ -11,12 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
     
     @Override

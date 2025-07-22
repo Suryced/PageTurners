@@ -3,7 +3,6 @@ package com.pageturners.dao;
 import com.pageturners.model.Book;
 import com.pageturners.util.DatabaseConnection;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

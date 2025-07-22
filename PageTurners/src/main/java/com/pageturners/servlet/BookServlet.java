@@ -13,6 +13,7 @@ import java.util.List;
 
 @WebServlet("/books")
 public class BookServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
     
     @Override
@@ -24,7 +25,6 @@ public class BookServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String action = request.getParameter("action");
         String category = request.getParameter("category");
         String search = request.getParameter("search");
         
