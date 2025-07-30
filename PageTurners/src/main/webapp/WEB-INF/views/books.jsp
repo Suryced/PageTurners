@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Books - PageTurners</title>
-    <link rel="stylesheet" type="text/css" href="/PageTurners/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
@@ -24,13 +24,13 @@
             </div>
             
             <div class="search-filter-section">
-                <form action="/PageTurners/books" method="get" class="search-form">
+                <form action="${pageContext.request.contextPath}/books" method="get" class="search-form">
                     <input type="text" name="search" value="<%= request.getAttribute("searchTerm") != null ? request.getAttribute("searchTerm") : "" %>" placeholder="🔍 Search for books, authors, or genres..." class="search-input">
                     <button type="submit" class="search-btn">Search</button>
                 </form>
                 
                 <div class="categories">
-                    <a href="/PageTurners/books" 
+                    <a href="${pageContext.request.contextPath}/books" 
                        class="category-btn <%= request.getAttribute("selectedCategory") == null ? "active" : "" %>">All Categories</a>
                     <%
                         @SuppressWarnings("unchecked")
@@ -40,7 +40,7 @@
                             for (String category : categories) {
                                 String activeClass = category.equals(selectedCategory) ? "active" : "";
                     %>
-                        <a href="/PageTurners/books?category=<%= category %>" 
+                        <a href="${pageContext.request.contextPath}/books?category=<%= category %>" 
                            class="category-btn <%= activeClass %>"><%= category %></a>
                     <%
                             }
@@ -69,7 +69,7 @@
                         <p class="book-description"><%= book.getDescription() %></p>
                         <p class="book-stock">In Stock: <%= book.getStockQuantity() %></p>
                         
-                        <form action="/PageTurners/cart" method="post" class="add-to-cart-form">
+                        <form action="${pageContext.request.contextPath}/cart" method="post" class="add-to-cart-form">
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" name="bookId" value="<%= book.getBookId() %>">
                             <% if (book.getStockQuantity() > 0) { %>
