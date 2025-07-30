@@ -8,7 +8,7 @@
     <display-name>PageTurners Online Bookstore</display-name>
     
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>redirect-to-home.jsp</welcome-file>
     </welcome-file-list>
     
     <session-config>

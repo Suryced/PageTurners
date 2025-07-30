@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PageTurners</title>
-    <link rel="stylesheet" type="text/css" href="/PageTurners/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
@@ -21,20 +20,28 @@
                     <p>Your gateway to endless literary adventures</p>
                 </div>
                 
-                <c:if test="${not empty error}">
-                    <div class="error-message">${error}</div>
-                </c:if>
+                <%
+                    String error = (String) request.getAttribute("error");
+                    if (error != null && !error.isEmpty()) {
+                %>
+                    <div class="error-message"><%= error %></div>
+                <%
+                    }
+                    
+                    String success = (String) request.getAttribute("success");
+                    if (success != null && !success.isEmpty()) {
+                %>
+                    <div class="success-message"><%= success %></div>
+                <%
+                    }
+                %>
                 
-                <c:if test="${not empty success}">
-                    <div class="success-message">${success}</div>
-                </c:if>
-                
-                <form action="/PageTurners/auth" method="post" class="auth-form">
+                <form action="${pageContext.request.contextPath}/auth" method="post" class="auth-form">
                     <input type="hidden" name="action" value="login">
                     
                     <div class="form-group">
                         <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" value="${param.username}" required>
+                        <input type="text" id="username" name="username" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>" required>
                     </div>
                     
                     <div class="form-group">
@@ -45,9 +52,9 @@
                     <button type="submit" class="btn btn-primary btn-full">Login</button>
                     
                     <div class="auth-footer">
-                        <a href="/PageTurners/auth?action=register">Don't have an account? Register here</a>
+                        <a href="${pageContext.request.contextPath}/auth?action=register">Don't have an account? Register here</a>
                         <br><br>
-                        <a href="/PageTurners/">Back to Home</a>
+                        <a href="${pageContext.request.contextPath}/">Back to Home</a>
                     </div>
                 </form>
             </div>
