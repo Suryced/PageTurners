@@ -85,7 +85,7 @@
                                         <a href="/PageTurners/checkout" class="btn btn-success">Proceed to Checkout</a>
                                     </c:when>
                                     <c:otherwise>
-                                        <div>
+                                        <div style="text-align: center;">
                                             <p style="margin-bottom: 1rem;">Please log in to checkout</p>
                                             <a href="/PageTurners/auth?action=login" class="btn btn-success">Login to Checkout</a>
                                         </div>

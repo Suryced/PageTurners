@@ -12,11 +12,11 @@
 <body>
     <%@ include file="header.jsp" %>
     
-    <main class="main-content">
-        <div class="auth-container">
+    <main class="main-content auth-body">
+        <div class="auth-container login-container">
             <div class="auth-card">
                 <div class="auth-header">
-                    <h1>🔑 Welcome Back</h1>
+                    <h1>Welcome Back</h1>
                     <p>Your gateway to endless literary adventures</p>
                 </div>
                 
@@ -40,12 +40,12 @@
                     <input type="hidden" name="action" value="login">
                     
                     <div class="form-group">
-                        <label for="username">Username:</label>
+                        <label for="username">Username: *</label>
                         <input type="text" id="username" name="username" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="password">Password:</label>
+                        <label for="password">Password: *</label>
                         <input type="password" id="password" name="password" required>
                     </div>
                     
@@ -54,7 +54,7 @@
                     <div class="auth-footer">
                         <a href="${pageContext.request.contextPath}/auth?action=register">Don't have an account? Register here</a>
                         <br><br>
-                        <a href="${pageContext.request.contextPath}/">Back to Home</a>
+                        <a href="${pageContext.request.contextPath}/home">Back to Home</a>
                     </div>
                 </form>
             </div>
