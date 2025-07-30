@@ -9,85 +9,158 @@
     <title>Browse Books - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
     <style>
-        .search-filter-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
-        .search-form {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            justify-content: center;
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 300;
         }
         
         .search-form input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 300px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            width: 400px;
+            max-width: 100%;
+            transition: all 0.3s ease;
         }
         
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+        .search-form input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
-        .category-btn {
-            padding: 8px 16px;
-            background-color: #ecf0f1;
-            color: #2c3e50;
-            text-decoration: none;
-            border-radius: 20px;
-            transition: all 0.3s;
-        }
-        
-        .category-btn:hover, .category-btn.active {
-            background-color: #3498db;
-            color: white;
+        .search-form .btn {
+            border-radius: 30px;
+            padding: 15px 30px;
         }
         
         .book-card .book-category {
-            color: #3498db;
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-bottom: 1rem;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .book-card .book-description {
             color: #555;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
         
         .stock-info {
             font-size: 0.9rem;
             color: #27ae60;
             margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stock-info.out-of-stock {
+            color: #e74c3c;
+        }
+        
+        .stock-info::before {
+            content: '✓';
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .stock-info.out-of-stock::before {
+            content: '✗';
+            background: #e74c3c;
         }
         
         .add-to-cart-form {
             display: flex;
             align-items: center;
             gap: 1rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-selector label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
         }
         
         .quantity-selector select {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
         }
         
         .no-books {
             text-align: center;
             color: #7f8c8d;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             grid-column: 1 / -1;
-            padding: 2rem;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .no-books::before {
+            content: '📚';
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -96,11 +169,14 @@
 
     <main>
         <div class="container">
-            <h1>Browse Books</h1>
+            <div class="page-header">
+                <h1>📚 Discover Your Next Great Read</h1>
+                <p>Explore our curated collection of books across all genres</p>
+            </div>
             
             <div class="search-filter-section">
                 <form action="${pageContext.request.contextPath}/books" method="get" class="search-form">
-                    <input type="text" name="search" value="${searchTerm}" placeholder="Search books...">
+                    <input type="text" name="search" value="${searchTerm}" placeholder="🔍 Search for books, authors, or genres...">
                     <button type="submit" class="btn">Search</button>
                 </form>
                 
@@ -127,18 +203,16 @@
                                 <p class="book-category">Category: ${book.category}</p>
                                 <p class="book-price"><fmt:formatNumber value="${book.price}" type="currency"/></p>
                                 <p class="book-description">${book.description}</p>
-                                <p class="stock-info">
-                                    <c:choose>
-                                        <c:when test="${book.stockQuantity > 0}">
-                                            ${book.stockQuantity} in stock
-                                        </c:when>
-                                        <c:otherwise>
-                                            Out of stock
-                                        </c:otherwise>
-                                    </c:choose>
-                                </p>
-                                
-                                <c:if test="${book.stockQuantity > 0}">
+                <p class="stock-info ${book.stockQuantity <= 0 ? 'out-of-stock' : ''}">
+                    <c:choose>
+                        <c:when test="${book.stockQuantity > 0}">
+                            ${book.stockQuantity} in stock
+                        </c:when>
+                        <c:otherwise>
+                            Out of stock
+                        </c:otherwise>
+                    </c:choose>
+                </p>                                <c:if test="${book.stockQuantity > 0}">
                                     <form action="${pageContext.request.contextPath}/cart" method="post" class="add-to-cart-form">
                                         <input type="hidden" name="action" value="add">
                                         <input type="hidden" name="bookId" value="${book.bookId}">

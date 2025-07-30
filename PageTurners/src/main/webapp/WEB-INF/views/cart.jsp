@@ -9,67 +9,166 @@
     <title>Shopping Cart - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
     <style>
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+        
         .cart-container {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.8);
         }
         
         .cart-item {
             display: grid;
             grid-template-columns: 3fr 2fr 1fr 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .cart-item:last-child {
             border-bottom: none;
         }
         
+        .cart-item:hover {
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 10px;
+            margin: 0 -1rem;
+            padding-left: 2.5rem;
+            padding-right: 2.5rem;
+        }
+        
         .book-info h3 {
+            font-family: 'Playfair Display', serif;
             color: #2c3e50;
             margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .book-info .author {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-info .price {
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .quantity-control {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .quantity-input {
             width: 60px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             text-align: center;
+            font-weight: 600;
+            background: white;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .remove-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .remove-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
         
         .cart-summary {
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             padding-top: 2rem;
-            border-top: 2px solid #eee;
+            border-top: 2px solid rgba(52, 152, 219, 0.2);
             text-align: right;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .total {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
             color: #2c3e50;
             margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         
         .empty-cart {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
             color: #7f8c8d;
         }
         
+        .empty-cart::before {
+            content: '🛒';
+            display: block;
+            font-size: 5rem;
+            margin-bottom: 2rem;
+        }
+        
         .empty-cart h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .empty-cart p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #7f8c8d;
         }
         
         .actions {
@@ -77,7 +176,26 @@
             gap: 1rem;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .continue-shopping {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .continue-shopping:hover {
+            color: #2980b9;
+            transform: translateX(-5px);
+        }
+        
+        .checkout-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            font-size: 1.1rem;
+            padding: 16px 32px;
         }
     </style>
 </head>
@@ -86,15 +204,17 @@
 
     <main>
         <div class="container">
-            <h1>Shopping Cart</h1>
+            <div class="page-header">
+                <h1>🛒 Your Shopping Cart</h1>
+            </div>
             
             <div class="cart-container">
                 <c:choose>
                     <c:when test="${empty sessionScope.cart}">
                         <div class="empty-cart">
                             <h2>Your cart is empty</h2>
-                            <p>Browse our collection and add some books to your cart!</p>
-                            <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Browse Books</a>
+                            <p>Browse our amazing collection and add some books to your cart!</p>
+                            <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">📚 Browse Books</a>
                         </div>
                     </c:when>
                     <c:otherwise>
