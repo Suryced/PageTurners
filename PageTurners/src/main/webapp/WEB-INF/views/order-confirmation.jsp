@@ -8,8 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
-    <style>
-        .confirmation-container {
+</head>
+<body>
+    <%@ include file="header.jsp" %>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="confirmation-container">
+                <div class="success-icon">✅</div>
+                <h1>Order Confirmed!</h1>
+                <p class="confirmation-message">Thank you for your order! Your books are being prepared for shipment.</p>
             background: white;
             border-radius: 10px;
             padding: 3rem;

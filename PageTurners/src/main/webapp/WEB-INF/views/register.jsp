@@ -8,7 +8,104 @@
     <title>Register - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;500;600&display=swap');
+</head>
+<body>
+    <%@ include file="header.jsp" %>
+    
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>📝 Join Our Community</h1>
+                    <p>Your gateway to endless literary adventures</p>
+                </div>
+                
+                <c:if test="${not empty error}">
+                    <div class="error-message">${error}</div>
+                </c:if>
+                
+                <form action="${pageContext.request.contextPath}/auth" method="post" class="auth-form">
+                    <input type="hidden" name="action" value="register">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span>:</label>
+                            <input type="text" id="firstName" name="firstName" value="${param.firstName}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span>:</label>
+                            <input type="text" id="lastName" name="lastName" value="${param.lastName}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Username <span class="required">*</span>:</label>
+                        <input type="text" id="username" name="username" value="${param.username}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span>:</label>
+                        <input type="email" id="email" name="email" value="${param.email}" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Password <span class="required">*</span>:</label>
+                            <input type="password" id="password" name="password" required>
+                            <small class="form-hint">Minimum 6 characters</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password <span class="required">*</span>:</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" value="${param.address}">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" id="city" name="city" value="${param.city}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="state">State:</label>
+                            <input type="text" id="state" name="state" value="${param.state}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code:</label>
+                            <input type="text" id="zipCode" name="zipCode" value="${param.zipCode}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" id="phone" name="phone" value="${param.phone}">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                    
+                    <div class="auth-footer">
+                        <a href="${pageContext.request.contextPath}/auth?action=login">Already have an account? Login here</a>
+                        <br><br>
+                        <a href="${pageContext.request.contextPath}/">Back to Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <%@ include file="footer.jsp" %>
+</body>
+</html>
         
         * {
             margin: 0;

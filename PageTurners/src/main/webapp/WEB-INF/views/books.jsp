@@ -8,37 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Books - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
-    <style>
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .page-header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, #3498db, #9b59b6);
-            border-radius: 2px;
-        }
-        
-        .page-header p {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            font-weight: 300;
-        }
+</head>
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
+</head>
+<body>
+    <%@ include file="header.jsp" %>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📚 Discover Your Next Great Read</h1>
+                <p>Explore our curated collection of books across all genres</p>
+            </div>
+            
+            <div class="search-filter-section">
+                <form action="${pageContext.request.contextPath}/books" method="get" class="search-form">
+                    <input type="text" name="search" value="${searchTerm}" placeholder="🔍 Search for books, authors, or genres..." class="search-input">
+                    <button type="submit" class="search-btn">Search</button>
+                </form>
+                
+                <div class="categories">
+                    <a href="${pageContext.request.contextPath}/books" 
+                       class="category-btn ${empty selectedCategory ? 'active' : ''}">All Categories</a>
         
         .search-form input {
             background: white;

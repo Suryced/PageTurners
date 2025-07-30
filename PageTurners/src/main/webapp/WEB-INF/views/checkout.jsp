@@ -8,8 +8,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
-    <style>
-        .page-header {
+</head>
+<body>
+    <%@ include file="header.jsp" %>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="ssl-notice">
+                🔒 Secure Checkout - Your information is protected with SSL encryption
+            </div>
+            
+            <div class="page-header">
+                <h1>Checkout</h1>
+            </div>
+            
+            <c:if test="${not empty error}">
+                <div class="error-message">${error}</div>
+            </c:if>
+            
+            <div class="checkout-container">
+                <div class="checkout-section">
+                    <h2 class="section-title">Shipping Information</h2>
+                    
+                    <form action="${pageContext.request.contextPath}/checkout" method="post" id="checkoutForm" class="checkout-form">
+                        <div class="form-group">
             text-align: center;
             margin-bottom: 3rem;
         }
