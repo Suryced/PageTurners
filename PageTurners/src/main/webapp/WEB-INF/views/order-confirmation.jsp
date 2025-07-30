@@ -7,7 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation - PageTurners</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/PageTurners/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
     <%@ include file="header.jsp" %>
@@ -171,8 +173,8 @@
                 </div>
                 
                 <div>
-                    <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Continue Shopping</a>
-                    <a href="${pageContext.request.contextPath}/" class="btn btn-success">Back to Home</a>
+                    <a href="/PageTurners/books" class="btn btn-primary">Continue Shopping</a>
+                    <a href="/PageTurners/" class="btn btn-success">Back to Home</a>
                 </div>
             </div>
         </div>

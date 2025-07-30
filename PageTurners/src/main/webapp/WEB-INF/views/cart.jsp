@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - PageTurners</title>
     <link rel="stylesheet" type="text/css" href="/PageTurners/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
     <%@ include file="header.jsp" %>
@@ -24,7 +26,7 @@
                         <div class="empty-cart">
                             <h2>Your cart is empty</h2>
                             <p>Browse our amazing collection and add some books to your cart!</p>
-                            <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">📚 Browse Books</a>
+                            <a href="/PageTurners/books" class="btn btn-primary">📚 Browse Books</a>
                         </div>
                     </c:when>
                     <c:otherwise>
@@ -44,7 +46,7 @@
                                 </div>
                                 
                                 <div class="quantity-control">
-                                    <form action="${pageContext.request.contextPath}/cart" method="post" style="display: inline;">
+                                    <form action="/PageTurners/cart" method="post" style="display: inline;">
                                         <input type="hidden" name="action" value="update">
                                         <input type="hidden" name="bookId" value="${item.book.bookId}">
                                         <input type="number" name="quantity" value="${item.quantity}" 
@@ -58,7 +60,7 @@
                                 </div>
                                 
                                 <div>
-                                    <form action="${pageContext.request.contextPath}/cart" method="post" style="display: inline;">
+                                    <form action="/PageTurners/cart" method="post" style="display: inline;">
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="bookId" value="${item.book.bookId}">
                                         <button type="submit" class="btn btn-danger">Remove</button>
@@ -74,16 +76,16 @@
                             </div>
                             
                             <div class="actions">
-                                <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Continue Shopping</a>
+                                <a href="/PageTurners/books" class="btn btn-primary">Continue Shopping</a>
                                 
                                 <c:choose>
                                     <c:when test="${sessionScope.user != null}">
-                                        <a href="${pageContext.request.contextPath}/checkout" class="btn btn-success">Proceed to Checkout</a>
+                                        <a href="/PageTurners/checkout" class="btn btn-success">Proceed to Checkout</a>
                                     </c:when>
                                     <c:otherwise>
                                         <div>
                                             <p style="margin-bottom: 1rem;">Please log in to checkout</p>
-                                            <a href="${pageContext.request.contextPath}/auth?action=login" class="btn btn-success">Login to Checkout</a>
+                                            <a href="/PageTurners/auth?action=login" class="btn btn-success">Login to Checkout</a>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
