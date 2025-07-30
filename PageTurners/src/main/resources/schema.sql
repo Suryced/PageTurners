@@ -51,10 +51,10 @@ CREATE TABLE IF NOT EXISTS order_items (
 );
 
 -- Insert sample books
-INSERT INTO books (title, author, category, description, price, stock_quantity) VALUES
-('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 'A classic American novel set in the Jazz Age.', 12.99, 50),
-('To Kill a Mockingbird', 'Harper Lee', 'Fiction', 'A gripping tale of racial injustice and childhood innocence.', 14.99, 30),
-('1984', 'George Orwell', 'Dystopian', 'A dystopian social science fiction novel.', 13.99, 40),
-('Pride and Prejudice', 'Jane Austen', 'Romance', 'A romantic novel of manners.', 11.99, 25),
-('The Catcher in the Rye', 'J.D. Salinger', 'Fiction', 'A coming-of-age story in New York.', 12.49, 35),
-('Lord of the Rings', 'J.R.R. Tolkien', 'Fantasy', 'An epic high fantasy adventure.', 29.99, 20);
+INSERT INTO books (title, author, isbn, category, description, price, stock_quantity, image_url) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', '978-0-7432-7356-5', 'Fiction', 'A classic American novel set in the Jazz Age.', 12.99, 50, '/PageTurners/images/great-gatsby.jpg'),
+('To Kill a Mockingbird', 'Harper Lee', '978-0-06-112008-4', 'Fiction', 'A gripping tale of racial injustice and childhood innocence.', 14.99, 30, '/PageTurners/images/mockingbird.jpg'),
+('1984', 'George Orwell', '978-0-452-28423-4', 'Dystopian', 'A dystopian social science fiction novel.', 13.99, 40, '/PageTurners/images/1984.jpg'),
+('Pride and Prejudice', 'Jane Austen', '978-0-14-143951-8', 'Romance', 'A romantic novel of manners.', 11.99, 25, '/PageTurners/images/pride-prejudice.jpg'),
+('The Catcher in the Rye', 'J.D. Salinger', '978-0-316-76948-0', 'Fiction', 'A coming-of-age story in New York.', 12.49, 35, '/PageTurners/images/catcher-rye.jpg'),
+('Lord of the Rings', 'J.R.R. Tolkien', '978-0-544-00341-5', 'Fantasy', 'An epic high fantasy adventure.', 29.99, 20, '/PageTurners/images/lotr.jpg');
