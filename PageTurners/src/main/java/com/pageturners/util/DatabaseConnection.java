@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     // H2 Database for testing (comment out for production MySQL)
-    private static final String URL = "jdbc:h2:mem:pageturners_db;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:schema.sql'";
+    private static final String URL = "jdbc:h2:mem:pageturners_db;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:/schema.sql'";
     private static final String USERNAME = "sa";
     private static final String PASSWORD = "";
     

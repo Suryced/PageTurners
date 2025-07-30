@@ -41,6 +41,14 @@
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <version>3.0.1</version>
     </dependency>
+
+    <!-- Jakarta EL API -->
+    <dependency>
+        <groupId>jakarta.el</groupId>
+        <artifactId>jakarta.el-api</artifactId>
+        <version>5.0.0</version>
+        <scope>provided</scope>
+    </dependency>
     
     <!-- MySQL Connector -->
     <dependency>
