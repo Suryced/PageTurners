@@ -12,7 +12,7 @@
                     if (user != null) {
                         // User is logged in
                 %>
-                        <li class="welcome-user">Welcome!</li>
+                        <li><a href="${pageContext.request.contextPath}/account">Account</a></li>
                         <li><a href="${pageContext.request.contextPath}/auth?action=logout">Logout</a></li>
                 <%
                     } else {

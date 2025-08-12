@@ -1,5 +1,7 @@
 package com.pageturners.model;
 
+import java.util.List;
+
 public class User {
     private int userId;
     private String username;
@@ -12,6 +14,7 @@ public class User {
     private String state;
     private String zipCode;
     private String phone;
+    private List<Order> orders;
     
     // Default constructor
     public User() {}
@@ -65,6 +68,9 @@ public class User {
     
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    
+    public List<Order> getOrders() { return orders; }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
     
     public String getFullName() {
         return firstName + " " + lastName;
