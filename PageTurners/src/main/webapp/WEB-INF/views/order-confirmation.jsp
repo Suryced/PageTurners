@@ -1,27 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.pageturners.model.Book" %>
-<%@ page import="java.text.NumberFormat" %>
-<%@ page import="java.util.Locale" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation - PageTurners</title>
-    <link rel="stylesheet" type="text/css" href="/PageTurners/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-</head>
-<body>
-    <%@ include file="header.jsp" %>
-
-    <main class="main-content">
-        <div class="container">
-            <div class="confirmation-container">
-                <div class="success-icon">✅</div>
-                <h1>Order Confirmed!</h1>
-                <p class="confirmation-message">Thank you for your order! Your books are being prepared for shipment.</p>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
+    <style>
+        .confirmation-container {
             background: white;
             border-radius: 10px;
             padding: 3rem;
@@ -115,12 +103,41 @@
             margin: 2rem 0;
             color: #856404;
         }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219a52;
+        }
     </style>
 </head>
 <body>
     <%@ include file="header.jsp" %>
 
-    <main>
+    <main class="main-content">
         <div class="container">
             <div class="confirmation-container">
                 <div class="success-icon">✅</div>
@@ -138,7 +155,7 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Order Date:</span>
-                        <span><fmt:formatDate value="${sessionScope.completedOrder.orderDate}" pattern="MMM dd, yyyy HH:mm"/></span>
+                        <span>${sessionScope.completedOrder.orderDate}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Status:</span>
@@ -147,7 +164,6 @@
                     
                     <div class="shipping-info">
                         <h3>Shipping Address:</h3>
-                        <p>${sessionScope.user.fullName}</p>
                         <p>${sessionScope.completedOrder.shippingAddress}</p>
                         <p>${sessionScope.completedOrder.shippingCity}, ${sessionScope.completedOrder.shippingState} ${sessionScope.completedOrder.shippingZip}</p>
                     </div>
@@ -162,21 +178,21 @@
                                     <p>Quantity: ${item.quantity}</p>
                                 </div>
                                 <div>
-                                    <fmt:formatNumber value="${item.subtotal}" type="currency"/>
+                                    $${item.book.price * item.quantity}
                                 </div>
                             </div>
                         </c:forEach>
                         
                         <div class="detail-row total-row">
                             <span class="detail-label">Total Amount:</span>
-                            <span><fmt:formatNumber value="${sessionScope.completedOrder.totalAmount}" type="currency"/></span>
+                            <span>$${sessionScope.completedOrder.totalAmount}</span>
                         </div>
                     </div>
                 </div>
                 
                 <div>
-                    <a href="/PageTurners/books" class="btn btn-primary">Continue Shopping</a>
-                    <a href="/PageTurners/" class="btn btn-success">Back to Home</a>
+                    <a href="${pageContext.request.contextPath}/books" class="btn btn-primary">Continue Shopping</a>
+                    <a href="${pageContext.request.contextPath}/home" class="btn btn-success">Back to Home</a>
                 </div>
             </div>
         </div>
