@@ -1,6 +1,7 @@
 package com.pageturners.servlet;
 
 import com.pageturners.dao.BookDAO;
+import com.pageturners.dao.OrderDAO;
 import com.pageturners.model.CartItem;
 import com.pageturners.model.Order;
 import com.pageturners.model.User;
@@ -19,10 +20,12 @@ import java.util.List;
 public class CheckoutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
+    private OrderDAO orderDAO;
     
     @Override
     public void init() throws ServletException {
         bookDAO = new BookDAO();
+        orderDAO = new OrderDAO();
     }
     
     @Override
@@ -97,9 +100,16 @@ public class CheckoutServlet extends HttpServlet {
                                shippingState.trim(), shippingZip.trim());
         order.setOrderItems(cart);
         
-        // Simulate order processing (in a real application, you would save to database)
-        // For this demo, we'll generate a mock order ID
-        order.setOrderId((int) (Math.random() * 100000) + 1000);
+        // Save order to database
+        try {
+            int generatedOrderId = orderDAO.saveOrder(order);
+            order.setOrderId(generatedOrderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Failed to save order. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/views/checkout.jsp").forward(request, response);
+            return;
+        }
         
         // Update stock quantities (in a real application)
         for (CartItem item : cart) {
@@ -112,6 +122,14 @@ public class CheckoutServlet extends HttpServlet {
         
         // Store order for confirmation page
         session.setAttribute("completedOrder", order);
+        
+        // Reload user's orders from database
+        try {
+            user.setOrders(orderDAO.getOrdersByUserId(user.getUserId()));
+            session.setAttribute("user", user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         response.sendRedirect(request.getContextPath() + "/order-confirmation");
     }
