@@ -9,7 +9,7 @@ import java.sql.*;
 public class UserDAO {
     
     public boolean registerUser(User user) {
-        String sql = "INSERT INTO users (username, email, password, first_name, last_name, address, city, state, zip_code, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, email, password_hash, first_name, last_name, address, city, state, zip_code, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                String storedPassword = rs.getString("password");
+                String storedPassword = rs.getString("password_hash");
                 if (PasswordUtil.checkPassword(password, storedPassword)) {
                     User user = new User();
                     user.setUserId(rs.getInt("user_id"));
