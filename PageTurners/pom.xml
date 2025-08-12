@@ -70,6 +70,20 @@
       <artifactId>spring-security-crypto</artifactId>
       <version>6.3.8</version>
     </dependency>
+    
+    <!-- Azure Communication Services Email -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-communication-email</artifactId>
+      <version>1.0.15</version>
+    </dependency>
+    
+    <!-- Azure Identity for authentication -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.11.4</version>
+    </dependency>
   </dependencies>
   
   <build>

@@ -5,6 +5,7 @@ import com.pageturners.dao.OrderDAO;
 import com.pageturners.model.CartItem;
 import com.pageturners.model.Order;
 import com.pageturners.model.User;
+import com.pageturners.util.EmailService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -117,20 +118,48 @@ public class CheckoutServlet extends HttpServlet {
             bookDAO.updateStock(item.getBook().getBookId(), newStock);
         }
         
+        // Send order confirmation email
+        try {
+            EmailService emailService = new EmailService();
+            boolean emailSent = emailService.sendOrderConfirmationEmail(user, order);
+            if (emailSent) {
+                System.out.println("Order confirmation email sent successfully to: " + user.getEmail());
+            } else {
+                System.err.println("Failed to send order confirmation email to: " + user.getEmail());
+            }
+        } catch (Exception e) {
+            // Don't fail the order if email fails - just log the error
+            System.err.println("Error sending order confirmation email: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
         // Clear cart
         session.removeAttribute("cart");
         
         // Store order for confirmation page
         session.setAttribute("completedOrder", order);
         
+        // Add debugging information
+        System.out.println("=== ORDER PLACEMENT DEBUG ===");
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("User ID: " + user.getUserId());
+        System.out.println("Order stored in session: " + (session.getAttribute("completedOrder") != null));
+        System.out.println("Redirecting to: " + request.getContextPath() + "/order-confirmation");
+        System.out.println("Full redirect URL: " + request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/order-confirmation");
+        System.out.println("=============================");
+        
         // Reload user's orders from database
         try {
             user.setOrders(orderDAO.getOrdersByUserId(user.getUserId()));
             session.setAttribute("user", user);
+            System.out.println("User orders reloaded: " + (user.getOrders() != null ? user.getOrders().size() : 0) + " orders");
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        response.sendRedirect(request.getContextPath() + "/order-confirmation");
+        // Force a direct redirect to order-confirmation with absolute URL
+        String redirectUrl = request.getContextPath() + "/order-confirmation";
+        System.out.println("Sending redirect to: " + redirectUrl);
+        response.sendRedirect(redirectUrl);
     }
 }
