@@ -1,6 +1,7 @@
 package com.pageturners.servlet;
 
 import com.pageturners.dao.UserDAO;
+import com.pageturners.dao.OrderDAO;
 import com.pageturners.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,10 +16,12 @@ import java.io.IOException;
 public class AuthServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserDAO userDAO;
+    private OrderDAO orderDAO;
     
     @Override
     public void init() throws ServletException {
         userDAO = new UserDAO();
+        orderDAO = new OrderDAO();
     }
     
     @Override
@@ -70,6 +73,14 @@ public class AuthServlet extends HttpServlet {
         User user = userDAO.authenticateUser(username.trim(), password);
         
         if (user != null) {
+            // Load user's orders from database
+            try {
+                user.setOrders(orderDAO.getOrdersByUserId(user.getUserId()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Continue even if orders fail to load
+            }
+            
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             response.sendRedirect(request.getContextPath() + "/books");
