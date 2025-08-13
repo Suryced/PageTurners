@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SHARED HOSTING CONFIGURATION FOR PAGETURNERS
+  
+  This configuration is optimized for deployment on someone else's server
+  where they manage the SSL certificate and domain structure.
+  
+  Key Features:
+  - No SSL configuration (handled by host server)
+  - HTTP-only connectors for internal communication
+  - Proxy-aware headers and logging
+  - Optimized for reverse proxy or subdomain setups
+-->
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+  <GlobalNamingResources>
+    <Resource auth="Container" description="User database that can be updated and saved" 
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory" 
+              name="UserDatabase" pathname="conf/tomcat-users.xml" 
+              type="org.apache.catalina.UserDatabase"/>
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+    
+    <!-- Primary HTTP Connector for shared hosting -->
+    <!-- SSL termination is handled by the host server -->
+    <Connector port="8080" 
+               protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               maxThreads="200"
+               minSpareThreads="10"
+               acceptCount="100"
+               enableLookups="false"
+               disableUploadTimeout="true"
+               compression="on"
+               compressionMinSize="2048"
+               compressibleMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+               maxParameterCount="1000"
+               scheme="https"
+               secure="true"
+               proxyPort="443"
+               proxyName="${proxy.hostname}">
+      
+      <!-- Enable HTTP/2 support (if host server supports it) -->
+      <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+    </Connector>
+
+    <!-- Optional: Secondary connector for internal communication -->
+    <Connector port="8081" 
+               protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               maxThreads="50"
+               address="127.0.0.1"
+               enableLookups="false"
+               maxParameterCount="1000" />
+
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <!-- Enhanced security realm -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+      </Realm>
+
+      <!-- Host configuration for shared hosting -->
+      <Host name="localhost" appBase="webapps"
+            unpackWARs="true" autoDeploy="false"
+            deployOnStartup="true">
+
+        <!-- Remote IP Valve for proper client IP handling behind proxy -->
+        <Valve className="org.apache.catalina.valves.RemoteIpValve"
+               remoteIpHeader="X-Forwarded-For"
+               protocolHeader="X-Forwarded-Proto"
+               httpsServerPort="443" />
+
+        <!-- Enhanced Access Log with proxy-aware information -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" 
+               directory="logs"
+               prefix="pageturners_shared_access_log" 
+               suffix=".txt"
+               pattern="%{X-Forwarded-For}i %h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; %D %{X-Forwarded-Proto}i"
+               resolveHosts="false" />
+
+        <!-- PageTurners Application Context -->
+        <Context docBase="PageTurners" 
+                 path="/PageTurners" 
+                 reloadable="false"
+                 source="org.eclipse.jst.jee.server:PageTurners">
+          
+          <!-- Environment parameters for shared hosting -->
+          <Environment name="hosting.mode" value="shared" type="java.lang.String"/>
+          <Environment name="ssl.managed.externally" value="true" type="java.lang.Boolean"/>
+          
+        </Context>
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
