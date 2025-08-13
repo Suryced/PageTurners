@@ -25,7 +25,7 @@
                             <li>${item.book.title} - Qty: ${item.quantity} - $${item.book.price}</li>
                         </c:forEach>
                     </ul>
-                    <p><a href="${pageContext.request.contextPath}/order">Back to Order History</a></p>
+                    <p><a href="${pageContext.request.contextPath}/account">Back to Order History</a></p>
                 </c:when>
                 <c:otherwise>
                     <h1>Your Orders</h1>
