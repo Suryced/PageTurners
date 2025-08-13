@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PRODUCTION SSL CONFIGURATION FOR TOMCAT
+  
+  This is a production-ready server.xml configuration that should replace
+  your development server.xml when deploying to production.
+  
+  Key Production Features:
+  - Strong SSL/TLS configuration with modern cipher suites
+  - HTTP to HTTPS redirect enforcement
+  - Security headers
+  - Production-grade connector settings
+  - Support for Let's Encrypt or commercial SSL certificates
+-->
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+    
+    <!-- HTTP Connector - Redirects all traffic to HTTPS -->
+    <Connector port="8080" 
+               protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443"
+               maxThreads="200"
+               minSpareThreads="10"
+               enableLookups="false"
+               disableUploadTimeout="true"
+               acceptCount="100"
+               scheme="http"
+               secure="false" />
+
+    <!-- HTTPS Connector - Production SSL Configuration -->
+    <Connector port="8443" 
+               protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="200"
+               minSpareThreads="10"
+               SSLEnabled="true"
+               scheme="https"
+               secure="true"
+               connectionTimeout="20000"
+               maxKeepAliveRequests="100"
+               keepAliveTimeout="30000"
+               acceptCount="100"
+               disableUploadTimeout="true"
+               enableLookups="false"
+               compression="on"
+               compressionMinSize="2048"
+               compressibleMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json">
+      
+      <!-- Enable HTTP/2 -->
+      <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+      
+      <!-- SSL Configuration -->
+      <SSLHostConfig>
+        <!-- PRODUCTION: Replace with your actual domain certificate -->
+        <Certificate certificateKeystoreFile="${catalina.base}/conf/production-ssl.p12"
+                     certificateKeystorePassword="${ssl.keystore.password}"
+                     certificateKeystoreType="PKCS12"
+                     type="RSA" />
+        
+        <!-- Strong SSL/TLS Configuration -->
+        <SSLHostConfig protocols="TLSv1.2,TLSv1.3"
+                       ciphers="TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_AES_128_GCM_SHA256,ECDHE-RSA-AES256-GCM-SHA384,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-RSA-AES256-SHA384,ECDHE-RSA-AES128-SHA256"
+                       honorCipherOrder="true"
+                       disableCompression="true"
+                       insecureRenegotiation="false" />
+      </SSLHostConfig>
+    </Connector>
+
+    <Engine name="Catalina" defaultHost="localhost">
+      
+      <!-- Security Realm -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <!-- Production Host Configuration -->
+      <Host name="localhost" appBase="webapps"
+            unpackWARs="true" autoDeploy="false"
+            deployOnStartup="true">
+
+        <!-- Security Valve for HTTP Headers -->
+        <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
+        
+        <!-- Access Log Valve -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" 
+               directory="logs"
+               prefix="pageturners_access_log" 
+               suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; %D" />
+
+        <!-- Security Headers Filter -->
+        <Valve className="org.apache.catalina.filters.HttpHeaderSecurityFilter"
+               hstsEnabled="true"
+               hstsMaxAgeSeconds="31536000"
+               hstsIncludeSubdomains="true"
+               antiClickJackingEnabled="true"
+               antiClickJackingOption="DENY"
+               blockContentTypeSniffingEnabled="true" />
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>

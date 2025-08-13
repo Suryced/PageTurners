@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>PageTurners - Shared Hosting Configuration</display-name>
+    <description>PageTurners Bookstore Application - Shared Hosting SSL Ready</description>
+
+    <!-- Shared Hosting Configuration -->
+    <!-- SSL is handled by the host server, not this application -->
+    
+    <!-- Session Configuration for Shared Hosting -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <!-- Secure flag handled by proxy server -->
+            <same-site>Strict</same-site>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- Security Headers Filter (still important for application security) -->
+    <filter>
+        <filter-name>SecurityHeadersFilter</filter-name>
+        <filter-class>com.pageturners.filter.SecurityHeadersFilter</filter-class>
+        <init-param>
+            <param-name>shared-hosting-mode</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SecurityHeadersFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Error Pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/views/error/error.jsp</location>
+    </error-page>
+
+    <!-- MIME Type Mappings -->
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>application/javascript</mime-type>
+    </mime-mapping>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Shared Hosting Environment Context Parameters -->
+    <context-param>
+        <param-name>environment</param-name>
+        <param-value>shared-hosting</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>ssl-managed-by-host</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>proxy-mode</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- Note: No HTTPS transport guarantee here as SSL is handled by host server -->
+    
+</web-app>
