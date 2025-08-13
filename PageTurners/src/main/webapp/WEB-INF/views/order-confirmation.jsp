@@ -145,7 +145,7 @@
                 <p>Thank you for your order. Your books will be shipped to you soon.</p>
                 
                 <div class="email-simulation">
-                    📧 <strong>Email Confirmation Simulation:</strong> A confirmation email would be sent to ${sessionScope.user.email} with order details and tracking information.
+                    📧 <strong>Email Confirmation:</strong> A confirmation email would be sent to ${sessionScope.user.email} with order details and tracking information.
                 </div>
                 
                 <div class="order-details">

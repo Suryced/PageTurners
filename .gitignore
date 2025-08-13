@@ -27,3 +27,5 @@ replay_pid*
 .vscode/*
 
 /Servers/
+
+PageTurners/src/main/resources/email.properties
